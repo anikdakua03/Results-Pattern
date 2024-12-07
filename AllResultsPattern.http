@@ -1,0 +1,28 @@
+@AllResultsPattern_HostAddress = http://localhost:5152
+
+GET {{AllResultsPattern_HostAddress}}/weatherforecast/ardalis
+Accept: application/json
+
+
+###
+GET {{AllResultsPattern_HostAddress}}/weatherforecast/erroror
+Accept: application/json
+
+###
+GET {{AllResultsPattern_HostAddress}}/weatherforecast/fluent
+Accept: application/json
+
+###
+GET {{AllResultsPattern_HostAddress}}/weatherforecast/csharpfunc
+Accept: application/json
+
+###
+POST {{AllResultsPattern_HostAddress}}/weatherforecast/custom
+Accept: application/json
+Content-Type : application/json
+
+{
+    "name": "John Doe",
+    "age": 1,
+    "email" : ""
+}
