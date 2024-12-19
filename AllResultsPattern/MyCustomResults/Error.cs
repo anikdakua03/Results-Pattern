@@ -56,9 +56,9 @@ public class Error
         return new Error(code, description, ErrorType.Forbidden, metadata);
     }
 
-    public static Error Custom(string code, string description, Dictionary<string, List<ValidationError>>? metadata = null)
+    public static Error Custom(string code, string description, ErrorType errorType, Dictionary<string, List<ValidationError>>? metadata = null)
     {
-        return new Error(code, description, (ErrorType)type, metadata);
+        return new Error(code, description, errorType, metadata);
     }
 }
 
