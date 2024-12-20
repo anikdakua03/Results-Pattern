@@ -708,9 +708,9 @@
 
 -----
 ### References:-
-[Fluent Results](https://github.com/altmann/FluentResults)
-[Error-or](https://github.com/amantinband/error-or)
-[Ardalis Result](https://github.com/ardalis/result)
-[Language-Ext](https://github.com/louthy/language-ext)
-[CSharp Functional Extension](https://github.com/vkhorikov/CSharpFunctionalExtensions/)
+- [Fluent Results](https://github.com/altmann/FluentResults)
+- [Error-or](https://github.com/amantinband/error-or)
+- [Ardalis Result](https://github.com/ardalis/result)
+- [Language-Ext](https://github.com/louthy/language-ext)
+- [CSharp Functional Extension](https://github.com/vkhorikov/CSharpFunctionalExtensions/)
 -----
