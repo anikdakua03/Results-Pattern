@@ -9,7 +9,6 @@ public class Result<TValue> : Result
         _value = value;
     }
 
-    // Not sure why this is giving 
     //public TValue Value => IsSuccess ? _value : throw new ArgumentException("Invalid argument where trying to get value when it is not success.", nameof(IsSuccess));
 
     public TValue Value => IsSuccess ? _value : default;

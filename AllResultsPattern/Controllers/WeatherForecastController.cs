@@ -1,6 +1,5 @@
 using AllResultsPattern.MyCustomResults;
 using AllResultsPattern.Services;
-using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AllResultsPattern.Controllers;
@@ -16,9 +15,8 @@ public class WeatherForecastController : ControllerBase
     private readonly IFluentResultWay _fluentResultWay;
     private readonly ICSharpFunctionalResult _cSharpFunctionalResult;
     private readonly ICustomResult _customResult;
-    private readonly IValidator<SampleUserRequest> _validator;
 
-    public WeatherForecastController(ILogger<WeatherForecastController> logger, IArdalisResult ardalisResult, IErrorResult errorResult, IFluentResultWay fluentResultWay, ICSharpFunctionalResult cSharpFunctionalResult, ICustomResult customResult, IValidator<SampleUserRequest> validator)
+    public WeatherForecastController(ILogger<WeatherForecastController> logger, IArdalisResult ardalisResult, IErrorResult errorResult, IFluentResultWay fluentResultWay, ICSharpFunctionalResult cSharpFunctionalResult, ICustomResult customResult)
     {
         _logger = logger;
         _ardalisResult = ardalisResult;
@@ -26,47 +24,62 @@ public class WeatherForecastController : ControllerBase
         _fluentResultWay = fluentResultWay;
         _cSharpFunctionalResult = cSharpFunctionalResult;
         _customResult = customResult;
-        _validator = validator;
     }
 
     [HttpGet("ardalis", Name = "GetWeatherForecastFromArdalisResult")]
-    public IActionResult GetWeatherFromArdalis()
+    public async Task<IActionResult> GetWeatherFromArdalis([FromBody] SampleUserRequest sampleUserRequest)
     {
-        var res = _ardalisResult.GetWeather();
+        var res = await _ardalisResult.GetWeather(sampleUserRequest);
 
         return Ok(res);
     }
 
-    [HttpGet("erroror", Name = "GetWeatherForecastFromErrorResult")]
-    public IActionResult GetWeatherFromErrorOr()
+    [HttpGet("error-or", Name = "GetWeatherForecastFromErrorResult")]
+    public async Task<IActionResult> GetWeatherFromErrorOr([FromBody] SampleUserRequest sampleUserRequest)
     {
-        var res = _errorResult.GetWeather();
+        var res = await _errorResult.GetWeather(sampleUserRequest);
+
+        // return await res.MatchAsync(
+        //     res => Ok(res),
+        //     err => BadRequest(err));
+
+        if (res.IsError)
+        {
+            return BadRequest(res);
+        }
 
         return Ok(res);
     }
 
     [HttpGet("fluent", Name = "GetWeatherForecastFromFluentResult")]
-    public IActionResult GetWeatherFromFluentr()
+    public async Task<IActionResult> GetWeatherFromFluent([FromBody] SampleUserRequest sampleUserRequest)
     {
-        var res = _fluentResultWay.GetWeather();
+        var res = await _fluentResultWay.GetWeather(sampleUserRequest);
+
+        if (res.IsFailed)
+        {
+            return BadRequest(res.Errors);
+        }
 
         return Ok(res);
     }
 
-    [HttpGet("csharpfunc", Name = "GetWeatherForecastFromCSharp")]
-    public IActionResult GetWeatherFromCSharp()
+    [HttpGet("csharp-func", Name = "GetWeatherForecastFromCSharp")]
+    public async Task<IActionResult> GetWeatherFromCSharp([FromBody] SampleUserRequest sampleUserRequest)
     {
-        var res = _cSharpFunctionalResult.GetWeather();
-        var c = res.GetValueOrDefault();
-        return Ok(c);
+        var res = await _cSharpFunctionalResult.GetWeather(sampleUserRequest);
+
+        if (res.IsFailure)
+        {
+            return BadRequest(res.Error);
+        }
+
+        return Ok(res.Value);
     }
 
     [HttpPost("custom", Name = "GetWeatherForecastFromCustom")]
     public async Task<IActionResult> GetWeatherFromCustom([FromBody] SampleUserRequest sampleUserRequest)
     {
-        var validationRes = await _validator.ValidateAsync(sampleUserRequest);
-
-        //return BadRequest(validationRes);
         var res = await _customResult.GetWeather(sampleUserRequest);
 
         return res.ToHttpResponse();

@@ -1,37 +1,31 @@
 ﻿using ErrorOr;
+using FluentValidation;
 
 namespace AllResultsPattern.Services;
 
-public class ErrorOrResult : IErrorResult
+public class ErrorOrResult(IValidator<SampleUserRequest> _validator) : IErrorResult
 {
-    private static readonly string[] Summaries = new[]
+    public async Task<ErrorOr<SampleUserResponse>> GetWeather(SampleUserRequest sampleUserRequest)
     {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+        var validationResult = await _validator.ValidateAsync(sampleUserRequest);
 
-    public ErrorOr<List<WeatherForecast>> GetWeather()
-    {
-        var err = new Dictionary<string, object>()
+        if (validationResult.IsValid == false)
         {
-            {"Error Key", "Error description" }
-        };
-        return Error.Conflict("SomeConflict", "Conflicted description...", err);
+            var validationErrors = validationResult.Errors
+                                    .GroupBy(group => group.PropertyName)
+                                    .ToDictionary(grp => grp.Key, grp => (object)grp);
 
-        return ErrorOr.Error.Custom(123, "Error.Custom", "Some description", err);
-        var weatherList = Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        {
-            Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        })
-        .ToList();
+            return Error.Validation(metadata: validationErrors);
+        }
 
-        return weatherList;
+        // return Error.Unexpected(description: "Something unexpected happened.");
+
+        return sampleUserRequest.ToUserResponse();
     }
 }
 
 
 public interface IErrorResult
 {
-    public ErrorOr<List<WeatherForecast>> GetWeather();
+    public Task<ErrorOr<SampleUserResponse>> GetWeather(SampleUserRequest sampleUserRequest);
 }

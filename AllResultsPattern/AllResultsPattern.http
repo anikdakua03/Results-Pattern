@@ -2,19 +2,46 @@
 
 GET {{AllResultsPattern_HostAddress}}/weatherforecast/ardalis
 Accept: application/json
+Content-Type : application/json
 
+{
+    "name": "John Doe",
+    "age": 21,
+    "email" : "test@test.com"
+}
 
 ###
-GET {{AllResultsPattern_HostAddress}}/weatherforecast/erroror
+GET {{AllResultsPattern_HostAddress}}/weatherforecast/error-or
 Accept: application/json
+Content-Type : application/json
+
+{
+    "name": "John Doe",
+    "age": 21,
+    "email" : "test@test.com"
+}
 
 ###
 GET {{AllResultsPattern_HostAddress}}/weatherforecast/fluent
 Accept: application/json
+Content-Type : application/json
+
+{
+    "name": "John Doe",
+    "age": 21,
+    "email" : "test@test.com"
+}
 
 ###
-GET {{AllResultsPattern_HostAddress}}/weatherforecast/csharpfunc
+GET {{AllResultsPattern_HostAddress}}/weatherforecast/csharp-func
 Accept: application/json
+Content-Type : application/json
+
+    {
+        "name": "John Doe",
+        "age": 1,
+        "email" : ""
+    }
 
 ###
 POST {{AllResultsPattern_HostAddress}}/weatherforecast/custom
@@ -23,6 +50,6 @@ Content-Type : application/json
 
 {
     "name": "John Doe",
-    "age": 1,
-    "email" : ""
+    "age": 21,
+    "email" : "test@test.com"
 }

@@ -1,43 +1,32 @@
 ﻿using FluentResults;
+using FluentValidation;
 
 namespace AllResultsPattern.Services;
 
-public class FluentResultWay : IFluentResultWay
+public class FluentResultWay(IValidator<SampleUserRequest> _validator) : IFluentResultWay
 {
-    private static readonly string[] Summaries = new[]
+    public async Task<Result<SampleUserResponse>> GetWeather(SampleUserRequest sampleUserRequest)
     {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+        var validationResult = await _validator.ValidateAsync(sampleUserRequest);
 
-    public Result<WeatherForecast[]> GetWeather()
-    {
-        //var errors = new ValidationError[]
-        //{ 
-        //    new("Error.Validation", "Some error happened", "ErrorCode", ValidationSeverity.Error),
-        //    new("Error.Validation2", "Some error 2 happened", "ErrorCode", ValidationSeverity.Info),
-        //    new("Error.Validation3", "Some error 3 happened", "ErrorCode", ValidationSeverity.Warning),
-        //};
-
-        //return Result.Invalid(errors);
-
-        //return Result.Conflict(["Some conflicted error", "Another conflicted error"]);
-        var er = new ResultSettingsBuilder();
-        
-        //return new Error("Error happened");
-
-        var weatherList = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+        if (validationResult.IsValid == false)
         {
-            Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        })
-        .ToArray();
+            var validationErrors = validationResult.Errors
+                                    .GroupBy(group => group.PropertyName)
+                                    .ToDictionary(grp => grp.Key, grp => (object)grp);
 
-        return weatherList;
+            var error = new Error("Some validation errors.");
+            error.WithMetadata(validationErrors);
+            return Result.Fail(error);
+        }
+
+        // return new Error("Some unexpected happened.");
+
+        return sampleUserRequest.ToUserResponse();
     }
 }
 
 public interface IFluentResultWay
 {
-    public Result<WeatherForecast[]> GetWeather();
+    public Task<Result<SampleUserResponse>> GetWeather(SampleUserRequest sampleUserRequest);
 }

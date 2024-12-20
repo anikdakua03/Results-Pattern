@@ -17,4 +17,8 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AllResultPattern.ServiceDefaults\AllResultPattern.ServiceDefaults.csproj" />
+  </ItemGroup>
+
 </Project>

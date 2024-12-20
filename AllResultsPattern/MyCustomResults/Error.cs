@@ -5,9 +5,11 @@ public class Error
     public string Code { get; }
     public string Description { get; }
     public ErrorType ErrorType { get; }
-    public Dictionary<string, List<ValidationError>>? Metadata { get; }
+    // public Dictionary<string, List<ValidationError>>? Metadata { get; }
+    public Dictionary<string, object>? Metadata { get; }
 
-    private Error(string code, string description, ErrorType type, Dictionary<string, List<ValidationError>>? metadata)
+    // private Error(string code, string description, ErrorType type, Dictionary<string, List<ValidationError>>? metadata)
+    private Error(string code, string description, ErrorType type, Dictionary<string, object>? metadata)
     {
         Code = code;
         Description = description;
@@ -21,42 +23,42 @@ public class Error
         return new(ErrorTypesConstant.NONE, string.Empty, ErrorType.None, []);
     }
 
-    public static Error Failure(string code = "General.Failure", string description = "A failure has occurred.", Dictionary<string, List<ValidationError>>? metadata = null)
+    public static Error Failure(string code = ErrorTypesConstant.BAD_REQUEST, string description = "A failure has occurred.", Dictionary<string, object>? metadata = null)
     {
         return new Error(code, description, ErrorType.Failure, metadata);
     }
 
-    public static Error Unexpected(string code = "General.Unexpected", string description = "An unexpected error has occurred.", Dictionary<string, List<ValidationError>>? metadata = null)
+    public static Error Unexpected(string code = ErrorTypesConstant.BAD_REQUEST, string description = "An unexpected error has occurred.", Dictionary<string, object>? metadata = null)
     {
         return new Error(code, description, ErrorType.Unexpected, metadata);
     }
 
-    public static Error Validation(string code = "General.Validation", string description = "A validation error has occurred.", Dictionary<string, List<ValidationError>>? metadata = null)
+    public static Error Validation(string code = ErrorTypesConstant.FAILED, string description = "A validation error has occurred.", Dictionary<string, object>? metadata = null)
     {
         return new Error(code, description, ErrorType.Validation, metadata);
     }
 
-    public static Error Conflict(string code = "General.Conflict", string description = "A conflict error has occurred.", Dictionary<string, List<ValidationError>>? metadata = null)
+    public static Error Conflict(string code = ErrorTypesConstant.CONFLICT, string description = "A conflict error has occurred.", Dictionary<string, object>? metadata = null)
     {
         return new Error(code, description, ErrorType.Conflict, metadata);
     }
 
-    public static Error NotFound(string code = ErrorTypesConstant.NOT_FOUND, string description = "A 'Not Found' error has occurred.", Dictionary<string, List<ValidationError>>? metadata = null)
+    public static Error NotFound(string code = ErrorTypesConstant.NOT_FOUND, string description = "A 'Not Found' error has occurred.", Dictionary<string, object>? metadata = null)
     {
         return new Error(code, description, ErrorType.NotFound, metadata);
     }
 
-    public static Error Unauthorized(string code = ErrorTypesConstant.UNAUTHORIZED, string description = "An 'Unauthorized' error has occurred.", Dictionary<string, List<ValidationError>>? metadata = null)
+    public static Error Unauthorized(string code = ErrorTypesConstant.UNAUTHORIZED, string description = "An 'Unauthorized' error has occurred.", Dictionary<string, object>? metadata = null)
     {
         return new Error(code, description, ErrorType.Unauthorized, metadata);
     }
 
-    public static Error Forbidden(string code = "General.Forbidden", string description = "A 'Forbidden' error has occurred.", Dictionary<string, List<ValidationError>>? metadata = null)
+    public static Error Forbidden(string code = ErrorTypesConstant.FORBIDDEN, string description = "A 'Forbidden' error has occurred.", Dictionary<string, object>? metadata = null)
     {
         return new Error(code, description, ErrorType.Forbidden, metadata);
     }
 
-    public static Error Custom(string code, string description, ErrorType errorType, Dictionary<string, List<ValidationError>>? metadata = null)
+    public static Error CustomError(string code, string description, ErrorType errorType, Dictionary<string, object>? metadata = null)
     {
         return new Error(code, description, errorType, metadata);
     }
@@ -65,11 +67,12 @@ public class Error
 public class ErrorTypesConstant
 {
     public const string NONE = "None";
+    public const string FAILED = "ValidationFailed";
+    public const string CONFLICT = "Duplicate";
     public const string UNAUTHORIZED = "Unauthorized";
     public const string NOT_FOUND = "NotFound";
-    public const string BAD_REQUEST = "ValiadtionFailed";
-    //public const string INTERNAL_SERVER_ERROR = "InternalServerError";
-
+    public const string BAD_REQUEST = "Unexpected";
+    public const string FORBIDDEN = "Forbidden";
 }
 
 public enum ErrorType

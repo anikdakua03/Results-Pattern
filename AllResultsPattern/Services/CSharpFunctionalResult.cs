@@ -1,36 +1,27 @@
 ﻿using CSharpFunctionalExtensions;
+using FluentValidation;
+using FluentValidation.Results;
 
 namespace AllResultsPattern.Services;
 
-public class CSharpFunctionalResult  :ICSharpFunctionalResult
+public class CSharpFunctionalResult(IValidator<SampleUserRequest> _validator) : ICSharpFunctionalResult
 {
-    private static readonly string[] Summaries = new[]
+    public async Task<Result<SampleUserRequest, List<ValidationFailure>>> GetWeather(SampleUserRequest sampleUserRequest)
     {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+        var validationResult = await _validator.ValidateAsync(sampleUserRequest);
 
-    public Result<List<WeatherForecast>> GetWeather()
-    {
-        var err = new Dictionary<string, object>()
+        if (validationResult.IsValid == false)
         {
-            {"Error Key", "Error description" }
-        };
-        //return Error.Conflict("SomeConflict", "Conflicted description...", err);
+            var errorResult = validationResult.Errors;
 
-        //return ErrorOr.Error.Custom(123, "Error.Custom", "Some description", err);
-        var weatherList = Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        {
-            Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        })
-        .ToList();
+            return errorResult;
+        }
 
-        return Result.Success<List<WeatherForecast>>(weatherList);
+        return sampleUserRequest;
     }
 }
 
 public interface ICSharpFunctionalResult
 {
-    public Result<List<WeatherForecast>> GetWeather();
+    public Task<Result<SampleUserRequest, List<ValidationFailure>>> GetWeather(SampleUserRequest sampleUserRequest);
 }

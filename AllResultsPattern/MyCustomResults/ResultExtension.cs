@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace AllResultsPattern.MyCustomResults;
 
@@ -29,6 +28,8 @@ public static class ResultExtension
     {
         return result.HasMultipleErrors
             ? new BadRequestObjectResult(result)
+            : result.Error is null ?
+            new BadRequestObjectResult(result)
             : result.Error.Code switch
             {
                 ErrorTypesConstant.NONE => new BadRequestObjectResult(result),
