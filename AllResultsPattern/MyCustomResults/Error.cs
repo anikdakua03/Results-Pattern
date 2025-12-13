@@ -1,4 +1,5 @@
-﻿namespace AllResultsPattern.MyCustomResults;
+﻿
+namespace AllResultsPattern.MyCustomResults;
 
 public class Error
 {
@@ -62,6 +63,8 @@ public class Error
     {
         return new Error(code, description, errorType, metadata);
     }
+
+    public static Error NullValue() => new(ErrorTypesConstant.NONE, "Null value", ErrorType.None, null);
 }
 
 public class ErrorTypesConstant

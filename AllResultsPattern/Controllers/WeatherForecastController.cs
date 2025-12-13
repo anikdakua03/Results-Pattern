@@ -84,4 +84,12 @@ public class WeatherForecastController : ControllerBase
 
         return res.ToHttpResponse();
     }
+
+    [HttpPost("custom-good", Name = "GetGoodWeatherForecastFromCustom")]
+    public async Task<IActionResult> GetGoodWeatherFromCustom([FromBody] SampleUserRequest sampleUserRequest)
+    {
+        var res = await _customResult.GetGoodWeather(sampleUserRequest);
+
+        return res.ToHttpResponse();
+    }
 }

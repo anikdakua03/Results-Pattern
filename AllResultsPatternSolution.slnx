@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
+  <Project Path="AllResultPattern.AppHost/AllResultPattern.AppHost.csproj" />
+  <Project Path="AllResultPattern.ServiceDefaults/AllResultPattern.ServiceDefaults.csproj" />
+  <Project Path="AllResultsPattern/AllResultsPattern.csproj" />
+</Solution>
