@@ -30,7 +30,7 @@ public class ResultMessage
 
     public static ResultMessage Warning(string warning) => new (warning, MessageType.Warning);
 
-    public static ResultMessage Failure(string message = "Request failed.") => new (message, MessageType.Failure);
+    //public static ResultMessage Failure(string message = "Request failed.") => new (message, MessageType.Failure);
 
     #endregion
 

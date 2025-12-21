@@ -1,26 +1,21 @@
 ﻿using AllResultsPattern.MyCustomResults;
 using FluentValidation;
-using Microsoft.Extensions.Internal;
 
 namespace AllResultsPattern.Services;
 
 public class CustomResultWay : ICustomResult
 {
     private readonly IValidator<SampleUserRequest> _validator;
-    private readonly ISystemClock _clock;
     private readonly TimeProvider _timeProvider;
 
-    public CustomResultWay(IValidator<SampleUserRequest> validator, ISystemClock clock, TimeProvider timeProvider)
+    public CustomResultWay(IValidator<SampleUserRequest> validator, TimeProvider timeProvider)
     {
         _validator = validator;
-        _clock = clock;
         _timeProvider = timeProvider;
     }
 
     public async Task<Result<SampleUserResponse>> GetWeather(SampleUserRequest sampleUserRequest)
     {
-        var d = _clock.UtcNow;
-
         var f = _timeProvider.GetUtcNow().DateTime;
 
         var validationResult = await _validator.ValidateAsync(sampleUserRequest);
@@ -36,16 +31,13 @@ public class CustomResultWay : ICustomResult
         // return Error.NotFound(description: "");
 
         // OR to return multiple errors
-        // var errors = new List<Error>()
-        // {
-        //     Error.CustomError("Request.Validation", "Sample request is invalid.", ErrorType.Validation),
-        //     Error.NotFound(),
-        //     Error.Conflict()
-        // };
+        List<Error> errors = [
+            Error.CustomError("Request.Validation", "Sample request is invalid.", ErrorType.Validation),
+            Error.NotFound(),
+            Error.Conflict()
+        ];
 
-        // return errors;
-
-        return sampleUserRequest.ToUserResponse();
+        return errors;
     }
 
     public async Task<Result<SampleUserResponse>> GetGoodWeather(SampleUserRequest sampleUserRequest)
@@ -61,13 +53,14 @@ public class CustomResultWay : ICustomResult
 
         SampleUserResponse response = sampleUserRequest.ToUserResponse();
 
+        // Invalid
         //return null;
 
         // simple message
-        // return response;
+        //return response;
 
         // suceess with some value
-        return (response, ResultMessage.Warning("Trying to send null as value"));
+        //return (response, ResultMessage.Warning("Trying to send null as value"));
 
         // success with muliple messages
         //return (response, [
@@ -75,6 +68,18 @@ public class CustomResultWay : ICustomResult
         //    ResultMessage.Warning("Some warning"),
         //    ResultMessage.Information("Some information")
         //]);
+
+        // error
+        //return SampleError.SamepleValidationError;
+
+        // OR to return multiple errors
+        List<Error> errors = [
+            Error.CustomError("Request.Validation", "Sample request is invalid.", ErrorType.Validation),
+            Error.NotFound(),
+            Error.Conflict()
+        ];
+
+        return errors;
     }
 }
 

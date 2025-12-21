@@ -10,7 +10,7 @@ public enum MessageType
 
     Warning,
 
-    Failure
+    //Failure
 }
 
 public static class EnumExtensions
