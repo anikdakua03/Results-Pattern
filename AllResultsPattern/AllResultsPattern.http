@@ -53,3 +53,14 @@ Content-Type : application/json
     "age": 21,
     "email" : "test@test.com"
 }
+
+###
+POST {{AllResultsPattern_HostAddress}}/weatherforecast/custom-good
+Accept: application/json
+Content-Type : application/json
+
+{
+    "name": "John Doe",
+    "age": 21,
+    "email" : "test@test.com"
+}

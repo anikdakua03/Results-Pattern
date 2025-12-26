@@ -1,13 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.12.35506.116
+# Visual Studio Version 18
+VisualStudioVersion = 18.3.11206.111
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllResultsPattern", "AllResultsPattern\AllResultsPattern.csproj", "{14B2E32B-770C-41C2-962F-C43460A35A61}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllResultPattern.AppHost", "AllResultPattern.AppHost\AllResultPattern.AppHost.csproj", "{3C41609A-6576-4B05-97E3-02A75286D6D8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllResultPattern.ServiceDefaults", "AllResultPattern.ServiceDefaults\AllResultPattern.ServiceDefaults.csproj", "{FCB5B6EA-F522-4CAF-846A-ED6A0F46C4AD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{089100B1-113F-4E66-888A-E83F3999EAFD}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,5 +35,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {18CA0EE0-9E8C-4FD8-A46D-D00C8A536D7E}
 	EndGlobalSection
 EndGlobal

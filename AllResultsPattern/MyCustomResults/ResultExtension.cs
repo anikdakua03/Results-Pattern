@@ -26,7 +26,7 @@ public static class ResultExtension
 
     private static IActionResult MapErrorResponse(Result result)
     {
-        return result.HasMultipleErrors
+        return result.HasErrors
             ? new BadRequestObjectResult(result)
             : result.Error is null ?
             new BadRequestObjectResult(result)
